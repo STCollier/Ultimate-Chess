@@ -17,10 +17,12 @@ class Sprite {
         std::string texturePath;
         glm::vec2 position;
 
-        Sprite(std::string filename, Shader shader);
+        double x, y, sx, sy, r;
+
+        Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, Shader shader);
         ~Sprite();
 
-        void draw(glm::vec2 position, glm::vec2 size, float rotation);
+        void draw();
     private:
         unsigned int m_VBO, m_VAO; // TODO: perhaps use an EBO
         Texture m_texture;

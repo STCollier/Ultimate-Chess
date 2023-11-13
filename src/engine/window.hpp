@@ -10,8 +10,8 @@ class Window {
     public:
         std::string title;
         std::unordered_set<int> keyPressed;
-        uint width;
-        uint height;
+        int width;
+        int height;
 
         Window(std::string title, int width, int height);
 

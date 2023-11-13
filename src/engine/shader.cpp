@@ -50,36 +50,42 @@ Shader::Shader(std::string vPath, std::string fPath) {
     glShaderSource(fragmentShader, 1, &fResult, NULL);
     glCompileShader(fragmentShader);  
     checkCompileErrors(fragmentShader, FRAGMENT);
+
+    m_ID = glCreateProgram();
+    glAttachShader(m_ID, vertexShader);
+    glAttachShader(m_ID, fragmentShader);
+    glLinkProgram(m_ID);
+    checkCompileErrors(m_ID, PROGRAM);
+
+    //Delete shaders
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 }
 
 void Shader::checkCompileErrors(unsigned int shader, ShaderType type) {
     int success;
-    char debugResult[1000];
-
-    switch (type) {
-        case PROGRAM:
-            glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-            if (!success) {
-                glGetShaderInfoLog(shader, 1000, NULL, debugResult);
-                std::cerr << "Cannot compile program shader: " << debugResult << '\n';
-            } else {
-                glGetProgramiv(shader, GL_LINK_STATUS, &success);
-            }
-            break;
-        case FRAGMENT:
-            glGetProgramiv(shader, GL_LINK_STATUS, &success);
-            if (!success) {
-                glGetShaderInfoLog(shader, 1000, NULL, debugResult);
-                std::cerr << "Cannot compile fragment shader: " << debugResult << '\n';
-            }
-            break;
-        case VERTEX:
-            glGetProgramiv(shader, GL_LINK_STATUS, &success);
-            if (!success) {
-                glGetShaderInfoLog(shader, 1000, NULL, debugResult);
-                std::cerr << "Cannot compile fragment shader: " << debugResult << '\n';
-            }
-            break;
+    char infoLog[1024];
+    if (type != PROGRAM)
+    {
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success)
+        {
+            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "| ERROR::SHADER: Compile-time error: Type: " << type << "\n"
+                << infoLog << "\n -- --------------------------------------------------- -- "
+                << std::endl;
+        }
+    }
+    else
+    {
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        if (!success)
+        {
+            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+            std::cout << "| ERROR::Shader: Link-time error: Type: " << type << "\n"
+                << infoLog << "\n -- --------------------------------------------------- -- "
+                << std::endl;
+        }
     }
 }
 

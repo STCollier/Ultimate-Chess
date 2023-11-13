@@ -16,6 +16,7 @@
 #include "window.hpp"
 #include "shader.hpp"
 #include "sprite.hpp"
+#include "shader.hpp"
 
 class Game {
     public:
@@ -23,10 +24,12 @@ class Game {
         std::unordered_set<int> keyPressed;
         float dt;
         float lastFrame;
+        float aspectRatio;
     
         Game(std::string title, int width, int height);
         ~Game();
 
+        void setupProjection(Shader shader);
         bool isRunning();
         void update();
         bool keyDown(int key);

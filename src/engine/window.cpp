@@ -28,14 +28,14 @@ void Window::keyboardCallback(int key, int scancode, int action, int mode) {
     }
 }
 
-Window::Window(std::string title, int width, int height) {
-    title = title;
-    width = width;
-    height = height;
+Window::Window(std::string _title, int _width, int _height) {
+    title = _title;
+    width = _width;
+    height = _height;
 
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     #ifdef __APPLE__
@@ -51,7 +51,6 @@ Window::Window(std::string title, int width, int height) {
         exit(1);
     }
 
-    glfwSwapInterval(1);
     glfwMakeContextCurrent(m_window);
 
     //Load all OpenGL function pointers with Glad
@@ -59,6 +58,9 @@ Window::Window(std::string title, int width, int height) {
         std::cerr << "Failed to initialize GLAD!\n";
         exit(1);
     }
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetFramebufferSizeCallback(m_window, sizeCallback);
     glfwSetKeyCallback(m_window, keyboardCallback);

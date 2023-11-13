@@ -4,7 +4,7 @@ BIN_DIR = ./bin
 LIBS = -ldl -lglfw -lm
 
 run:
-	$(CC) src/main.cpp src/engine/*.cpp lib/glad/glad.c -Ilib $(CFLAGS) -o $(BIN_DIR)/main $(LIBS) -std=c++20
+	$(CC) src/main.cpp src/engine/*.cpp lib/glad/glad.c -Ilib $(CFLAGS) -o $(BIN_DIR)/main $(LIBS) -std=c++20 -O2
 	$(BIN_DIR)/main
 
 debug:

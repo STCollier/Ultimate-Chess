@@ -1,8 +1,14 @@
 #include "sprite.hpp"
 
-Sprite::Sprite(std::string filename, Shader shader) : m_texture(filename), m_shader(shader.vertexPath, shader.fragmentPath) {
+Sprite::Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, Shader shader) : m_texture(filename), m_shader(shader.vertexPath, shader.fragmentPath) {
     texturePath = filename;
     m_shader = shader;
+
+    x = xPos;
+    y = yPos;
+    sx = scaleX;
+    sy = scaleY;
+    r = rotation;
 
     float vertices[] = { 
         // pos      // tex
@@ -33,17 +39,17 @@ Sprite::~Sprite() {
     glDeleteBuffers(1, &m_VBO);
 }
 
-void Sprite::draw(glm::vec2 position, glm::vec2 size, float rotation) {
+void Sprite::draw() {
     m_shader.use();
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position, 0.0f));  
+    model = glm::translate(model, glm::vec3(glm::vec2(static_cast<float>(x), static_cast<float>(y)), 0.0f));  
 
-    model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f)); 
-    model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)); 
-    model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+    glm::vec2 size(static_cast<float>(sx), static_cast<float>(sy));
+    model = glm::rotate(model, glm::radians(static_cast<float>(r)), glm::vec3(0.0f, 0.0f, 1.0f)); 
+    model = glm::translate(model, glm::vec3(-size.x / 2, -size.y / 2, 0.0f)); 
 
-    model = glm::scale(model, glm::vec3(size, 1.0f)); 
+    model = glm::scale(model, glm::vec3(size, 1.0f));
   
     glUniformMatrix4fv(glGetUniformLocation(m_shader.getID(), "model"), 1, false, glm::value_ptr(model));
     glUniform3f(glGetUniformLocation(m_shader.getID(), "spriteColor"), 1, 1, 1);
