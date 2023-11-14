@@ -16,8 +16,10 @@ class Texture {
         unsigned int ID;
 
         Texture(std::string textureFilename);
-        void bind();
+        Texture() = default;
         ~Texture();
+
+        void bind();
 };
 
 #endif  

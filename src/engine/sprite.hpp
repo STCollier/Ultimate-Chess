@@ -20,6 +20,7 @@ class Sprite {
         double x, y, sx, sy, r;
 
         Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, Shader shader);
+        Sprite() = default;
         ~Sprite();
 
         void draw();

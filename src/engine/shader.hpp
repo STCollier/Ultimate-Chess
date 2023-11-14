@@ -19,6 +19,8 @@ class Shader {
         std::string fragmentPath;
 
         Shader(std::string vPath, std::string fPath);
+        Shader() = default;
+        
         unsigned int getID() { return m_ID; }
         void use();
     private:

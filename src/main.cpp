@@ -1,5 +1,6 @@
 #include <iostream>
 #include "engine/game.hpp"
+#include "chess/board.hpp"
 
 int main() {
     Game game("Ultimate Chess", 1920, 1080);
@@ -9,15 +10,17 @@ int main() {
     int windowWidth = game.window.width;
     int windowHeight = game.window.height;
 
-    Sprite pawn("res/sprites/pawn.png", windowWidth/2, windowHeight/2, 256, 256, 0, spriteShader);
+    //Board board(spriteShader);
+    Sprite pawn;
+    pawn = {"res/sprites/pawn.png", windowWidth/2, windowHeight/2, 256, 256, 0, spriteShader};
+
+
 
     while (game.isRunning()) {
         game.update();
 
+        //board.draw();
         pawn.draw();
-        pawn.r += 100 * game.dt;
-
-        std::cout << "FPS: " << game.FPS() << "\n";
 
         glfwSwapBuffers(game.window.getWindow());
         glfwSwapInterval(1);
