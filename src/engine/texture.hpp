@@ -17,7 +17,7 @@ class Texture {
 
         Texture(std::string textureFilename);
         Texture() = default;
-        ~Texture();
+        //~Texture();
 
         void bind();
 };

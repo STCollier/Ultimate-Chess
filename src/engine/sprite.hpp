@@ -18,10 +18,11 @@ class Sprite {
         glm::vec2 position;
 
         double x, y, sx, sy, r;
+        glm::vec3 color;
 
-        Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, Shader shader);
+        Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, glm::vec3 spriteColor, Shader shader);
         Sprite() = default;
-        ~Sprite();
+        //~Sprite();
 
         void draw();
     private:

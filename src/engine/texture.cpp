@@ -25,10 +25,17 @@ Texture::Texture(std::string textureFilename) {
                 format = GL_RGBA;
                 break;
         }
-
+        
         glBindTexture(GL_TEXTURE_2D, ID);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        if (channels == 2) {
+            GLint swizzleMask[] = {GL_RED, GL_RED, GL_RED, GL_GREEN};
+            glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
+        }
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -46,6 +53,6 @@ void Texture::bind() {
     glBindTexture(GL_TEXTURE_2D, ID);
 }
 
-Texture::~Texture() {
+/*Texture::~Texture() {
     glDeleteTextures(1, &ID);
-}
+}*/

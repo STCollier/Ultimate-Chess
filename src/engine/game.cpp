@@ -26,6 +26,8 @@ void Game::update() {
     dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
+    mousePosition = glm::vec2(static_cast<float>(window.mouseX), static_cast<float>(window.mouseY));
+
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -33,6 +35,10 @@ void Game::update() {
 // https://www.glfw.org/docs/3.2/group__keys.html
 bool Game::keyDown(int key) {
     return window.keyPressed.find(key) != window.keyPressed.end();
+}
+
+bool Game::mouseDown(int button) {
+    return window.mousePressed.find(button) != window.mousePressed.end();
 }
 
 int Game::FPS() {

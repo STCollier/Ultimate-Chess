@@ -28,6 +28,23 @@ void Window::keyboardCallback(int key, int scancode, int action, int mode) {
     }
 }
 
+void Window::mouseCallback(GLFWwindow* window, int button, int action, int mode) {
+    Window *handler = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+    handler->mouseCallback(button, action, mode);
+}
+
+void Window::mouseCallback(int button, int action, int mode) {
+    (void) mode;
+
+    if (action == GLFW_PRESS) {
+        mousePressed.insert(button);
+    } else if (action == GLFW_RELEASE) {
+        mousePressed.erase(button);
+    }
+
+    glfwGetCursorPos(m_window, &mouseX, &mouseY);
+}
+
 Window::Window(std::string _title, int _width, int _height) {
     title = _title;
     width = _width;
@@ -64,6 +81,7 @@ Window::Window(std::string _title, int _width, int _height) {
 
     glfwSetFramebufferSizeCallback(m_window, sizeCallback);
     glfwSetKeyCallback(m_window, keyboardCallback);
+    glfwSetMouseButtonCallback(m_window, mouseCallback);
 }
 
 GLFWwindow* Window::getWindow() {

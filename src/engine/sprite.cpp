@@ -1,6 +1,6 @@
 #include "sprite.hpp"
 
-Sprite::Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, Shader shader) : m_texture(filename), m_shader(shader.vertexPath, shader.fragmentPath) {
+Sprite::Sprite(std::string filename, double xPos, double yPos, double scaleX, double scaleY, double rotation, glm::vec3 spriteColor, Shader shader) : m_texture(filename), m_shader(shader.vertexPath, shader.fragmentPath) {
     texturePath = filename;
     m_shader = shader;
 
@@ -9,6 +9,7 @@ Sprite::Sprite(std::string filename, double xPos, double yPos, double scaleX, do
     sx = scaleX;
     sy = scaleY;
     r = rotation;
+    color = glm::vec3(spriteColor);
 
     float vertices[] = { 
         // pos      // tex
@@ -34,10 +35,10 @@ Sprite::Sprite(std::string filename, double xPos, double yPos, double scaleX, do
     glBindVertexArray(0);
 }
 
-Sprite::~Sprite() {
+/*Sprite::~Sprite() {
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VBO);
-}
+}*/
 
 void Sprite::draw() {
     m_shader.use();
@@ -52,7 +53,7 @@ void Sprite::draw() {
     model = glm::scale(model, glm::vec3(size, 1.0f));
   
     glUniformMatrix4fv(glGetUniformLocation(m_shader.getID(), "model"), 1, false, glm::value_ptr(model));
-    glUniform3f(glGetUniformLocation(m_shader.getID(), "spriteColor"), 1, 1, 1);
+    glUniform3f(glGetUniformLocation(m_shader.getID(), "spriteColor"), color.x/255, color.y/255, color.z/255);
   
     glActiveTexture(GL_TEXTURE0);
     m_texture.bind();
