@@ -1,11 +1,12 @@
 #include "window.hpp"
 
 void Window::sizeCallback(GLFWwindow *window, int width, int height) {
+    (void) width, (void) height;
     Window *handler = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
-    handler->sizeCallback(width, height);
+    handler->sizeCallback();
 }
 
-void Window::sizeCallback(int width, int height) {
+void Window::sizeCallback() {
     glViewport(0, 0, width, height);
 }
 

@@ -2,19 +2,11 @@
 #define BOARD_H
 
 #include "../engine/game.hpp"
-
-enum PieceInfo {
-    EMPTY = 0,
-    PAWN = 1,
-    KNIGHT = 2,
-    BISHOP = 3,
-    ROOK = 4,
-    QUEEN = 5,
-    KING = 6,
-
-    WHITE = 8,
-    BLACK = 16
-};
+#include "piece.hpp"
+#include <stdint.h>
+#include <limits.h>
+#include <bit>
+#include <bitset>
 
 enum BoardLocation {
     A1, B1, C1, D1, E1, F1, G1, H1,
@@ -30,22 +22,34 @@ enum BoardLocation {
 class Board {
     public:
         int squares[64];
-        bool focused; // If user selects a piece on the board
+        uint64_t bitboards[12];
+        uint64_t whiteBitboard, blackBitboard;
+        std::vector<Piece> pieces;
+        bool turn = 0; // 0 = White, 1 = Black
+        bool focused = 0; // If user selects a piece on the board
 
+        int clickedPiece;
         glm::ivec2 clickedPieceLocation;
-        glm::ivec2 targetPieceLocation;
+        glm::ivec2 targetLocation;
 
         Board(Shader spriteShader);
         void draw();
         void update(Game& game);
         void loadFromFEN(std::string fen);
+        bool makeMove();
 
         int pieceAt(int location) { return squares[location]; }
         int pieceType(int location) { return squares[location] & 0b111; }
         int pieceColor(int location) { return (squares[location] >> 3) << 3; }
+
+        void printBitboard(uint64_t b);
+        void setBit(uint64_t &b, int i) { b |= (1ULL << i); }
+        int getBit(uint64_t b, int i) { return b & (1ULL << i); }
+        void clearBit(uint64_t &b, int i) { b &= ~(1ULL << i); }
+        int lsb(uint64_t b) { return std::__countr_zero(b); };
+        int popLSB(uint64_t &b);
     private:
         Sprite m_boardSprites[64];
-        std::vector<Sprite> m_pieceSprites;
 
         glm::vec3 m_lightColor = glm::vec3(255, 242, 216);
         glm::vec3 m_darkColor = glm::vec3(176, 146, 106);

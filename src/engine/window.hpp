@@ -20,7 +20,7 @@ class Window {
         Window(std::string title, int width, int height);
         
         GLFWwindow* getWindow();
-        virtual void sizeCallback(int width, int height);
+        virtual void sizeCallback();
         virtual void keyboardCallback(int key, int scancode, int action, int mode);
         virtual void mouseCallback(int button, int action, int mode);
     private:
